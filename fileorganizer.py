@@ -58,6 +58,18 @@ def map_extension_to_folder(path: str) -> dict:
     extension_mapping = {path + '\\'+ dir:FILE_EXT_TYPES[i] for i,dir in enumerate(DIR_TYPES)}
     return extension_mapping
 
+if __name__ == '__main__':
+    DIR_TYPES = ['Pictures', 'Videos', 'PDF_files',
+                 'Music', 'TXT_files', 'Python_files',
+                 'Word_files', 'Excel_files', 'Exe_files',
+                 'Archived_files', 'CDR_files'
+                 ]
+    FILE_EXT_TYPES = [['.jpg', '.jpeg', '.png', '.JPG'], ['.mp4', '.mov', '.MOV','.avi'], ['.pdf', '.PDF'],
+                      '.mp3', '.txt', '.py',
+                      ['.doc', '.docx'], ['.csv', '.xlsx', 'xls'], '.exe',
+                      ['.7z', '.zip'], '.cdr'
+                    ]
+
     path = menu()
     mapping = map_extension_to_folder(path)
     # print(mapping)
