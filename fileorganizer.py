@@ -11,7 +11,7 @@
 #snake_case -> first_name
 
 import os
-#import shutil
+import shutil
 
 def menu():
     path = input ("Insert the path or press Q to exit the program: ")
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     create_dirs(path)
     files = list_all_files(path)
     # print(files)
-    #
+
     for file in files:
         file_extension = extract_file_extension(file)
         # print(file_extension)
