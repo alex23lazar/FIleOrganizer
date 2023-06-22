@@ -1,120 +1,76 @@
-print("Hello World!")
-print("Salut!")
-print(2)
+# File organizer
 
-a = 45.82
-nume = "Codex"
-f = 45.82
-com = 3.14j
-adevarat = True
+# Input data:
+#       - Path to folder
+# Const:
+#       - DIR_NAMES
+#       - FILE EXTENSION
+#
+# OUTPUT:
+#       - Move files in the specific folder
+#snake_case -> first_name
 
-print (a)
-print (nume)
-print (f)
-print (com)
-print(adevarat)
+import os
+#import shutil
 
-print (type(a))
-print (type(nume))
-print (type(f))
-print (type(com))
-print (type(adevarat))
+def menu():
+    path = input ("Insert the path or press Q to exit the program: ")
+    while not path_validation(path):
+        if path == "Q":
+            exit()
+        path = input("Insert the path or press Q to exit the program: ")
+    print ("The path is valid")
+    return path
 
-suma = a / f
+def path_validation(path: str) -> bool:
+    return os.path.isdir(path)
 
-print(suma)
+def create_dirs(path: str):
+    for dir in DIR_TYPES:
+        if not os.path.isdir(path + '\\' + dir):
+            os.mkdir(path + '\\' + dir)
 
-if a > f:
-    print ("#1 Variabila a este mai mare decat f")
-elif a < f:
-    print ("#2 a < f")
-    sumb = a - f
-    print("Valoarea lui sumb este:", sumb)
-elif a == f:
-    print ("#3 Cele 2 variabile sunt egale")
-else:
-    print("Nu este adevarat")
-    
-b = 102
-c = -86
+def list_all_files(path: str) -> list:
+    files = [file for file in os.listdir(path) if os.path.isfile(path + '\\' + file)]
+    return files
 
-#Comparare
-if b > c:
-    print ("#1 Variabila b este mai mare decat c")
-elif b < c:
-    print ("#2 b < c")
-    sumd = b - c
-    print("Valoarea lui sumb este:", sumd)
-elif b == c:
-    print ("#3 Cele 2 variabile sunt egale")
-else:
-    print("Nu este adevarat")
-   
-#Functia noastra  
-def comparare(nrA, nrB):
-    print ("####RULEZ FUNCTIA####")
-    if nrA > nrB:
-        print ("#1 Variabila b este mai mare decat c")
-    elif nrA < nrB:
-        print ("#2 nrA < nrB")
-        sumd = nrA + nrB
-        print("Valoarea lui sumb este:", sumd)
-    elif nrA == nrB:
-        print ("#3 Cele 2 variabile sunt egale")
-    else:
-        print("Nu este adevarat")
-        
-comparare(20,21)
-comparare(10, 10)
-comparare(41.51, -32.12)
+def extract_file_extension(file: str) -> str:
+    # indexes = [i for i, ch in enumerate(file) if ch == '.']
+    # if indexes:
+    #     file_extension = file[indexes[-1]::]
+    #     return file_extension
+    # else:
+    #     return 'no extension'
+    ###### varianta 2 ##########
+    # index = file.rfind('.')
+    # print(index)
+    # if index != -1:
+    #     return file[index::]
+    # else:
+    #     return 'no extension'
 
-def inmultire(nrA, nrB):
-    rez = nrA * nrB
-    return rez
-var = inmultire(53, 21)
-
-print(var)
-
-def impartire():
-    rez = 25 / 41
-    return rez
-
-imp = impartire()
-
-print(imp)
-
-sumfor = 0
+    ###### varianta 3 ##########
+    filename, extension = os.path.splitext(file)
+    return extension
 
 
-for x in range(1, 101):
-    sumfor = sumfor + x
-    
-print("Suma numerelor este:", sumfor)
+def map_extension_to_folder(path: str) -> dict:
+    extension_mapping = {path + '\\'+ dir:FILE_EXT_TYPES[i] for i,dir in enumerate(DIR_TYPES)}
+    return extension_mapping
 
-rezFor = 0
-
-for i in range (1, 50):
-    rezFor = inmultire(i, i + 1) 
-    print(rezFor)
-   
-nrVocale = 0 
-textAnaliza = "Masina are mai multe roti"
-
-for cuv in textAnaliza:
-    if cuv == "a":
-        print("Am gasit vocala", cuv)
-        nrVocale += 1
-    elif cuv == "i":
-        print("Am gasit vocala", cuv)
-        nrVocale += 1
-    elif cuv == "o":
-        print("Am gasit vocala", cuv)
-        nrVocale += 1
-    elif cuv == "u":
-        print("Am gasit vocala", cuv)
-        nrVocale += 1
-    else:
-        print("Litera nu este o vocala", cuv)
-        
-print ("Numarul total de vocale", nrVocale)
-    
+    path = menu()
+    mapping = map_extension_to_folder(path)
+    # print(mapping)
+    create_dirs(path)
+    files = list_all_files(path)
+    # print(files)
+    #
+    for file in files:
+        file_extension = extract_file_extension(file)
+        # print(file_extension)
+        for k,v in mapping.items():
+            if file_extension in v:
+                try:
+                    shutil.move(path + '\\' + file, k)
+                except:
+                    print(file + ' cannot be moved!')
